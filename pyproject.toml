@@ -4,9 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pefetch"
-version = "0.0.0"
-dependencies = [
-]
+version = "0.0.1"
 requires-python = ">=3.8"
 authors = [
   {name = "Stan Ulbrych"},
