@@ -1,4 +1,5 @@
 import argparse
+import random
 import urllib.request
 import urllib.error
 from html.parser import HTMLParser
@@ -11,13 +12,13 @@ class Stripper(HTMLParser):
         self.current_href = None
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'a':
-            href = dict(attrs).get('href')
+        if tag == "a":
+            href = dict(attrs).get("href")
             if href:
                 self.current_href = "https://projecteuler.net/" + href.lstrip("/")
 
     def handle_endtag(self, tag):
-        if tag == 'a' and self.current_href:
+        if tag == "a" and self.current_href:
             self.current_href = None
 
     def handle_data(self, data):
@@ -27,7 +28,7 @@ class Stripper(HTMLParser):
             self.result.append(data)
 
     def get_text(self):
-        return ''.join(self.result)
+        return "".join(self.result)
 
 
 def strip_html(html):
@@ -37,22 +38,22 @@ def strip_html(html):
 
 
 def latexizer(string):
-    string = string.replace('$$', '$')
+    string = string.replace("$$", "$")
     OPENING_DLLR = True
     result = []
     for char in string:
-        if char == '$':
+        if char == "$":
             if OPENING_DLLR:
-                result.append('\u001b[37;1m')
+                result.append("\u001b[37;1m")
             else:
-                result.append('\u001b[0m')
+                result.append("\u001b[0m")
             OPENING_DLLR = not OPENING_DLLR
         else:
             result.append(char)
 
-    string = ''.join(result)
-    string = string.replace('\\dots', '...')
-    string = string.replace('\\times', '*')
+    string = "".join(result)
+    string = string.replace("\\dots", "...")
+    string = string.replace("\\times", "*")
     return string
 
 
@@ -62,7 +63,6 @@ def format_content(content, number):
     content = strip_html(content)
     content = latexizer(content)
     result += content
-    lines = result.splitlines()
     return result
 
 
@@ -70,7 +70,7 @@ def fetch_problem(number):
     url = f"https://projecteuler.net/minimal={number}"
     try:
         with urllib.request.urlopen(url) as response:
-            content = response.read().decode('utf-8')
+            content = response.read().decode("utf-8")
             print(format_content(content, number))
     except urllib.error.HTTPError as e:
         print(f"Error: Could not fetch problem {number} (HTTP {e.code})")
@@ -80,14 +80,22 @@ def fetch_problem(number):
 
 def main():
     parser = argparse.ArgumentParser(
-        prog='pefetch',
-        description='Project Euler Problem Fetcher',
-        epilog='https://github.com/StanFromIreland/pefetch',)
-    parser.add_argument('problem')
-    parser.add_argument('--link', '-l', action='store_true')
+        prog="pefetch",
+        description="Project Euler Problem Fetcher",
+        epilog="For more information see \u001b[34;1mhttps://github.com/StanFromIreland/pefetch\u001b[0m",
+    )
+    parser.add_argument("problem_number", help="problem number, type r for random")
+    parser.add_argument(
+        "--link", "-l", help="print link to problem", action="store_true"
+    )
     args = parser.parse_args()
 
-    fetch_problem(args.problem)
+    if args.problem_number == "r":
+        args.problem_number = random.randint(1, 950)
+
+    fetch_problem(args.problem_number)
 
     if args.link:
-        print(f"\n\u001b[34;1mhttps://projecteuler.net/problem={args.problem}\n\u001b[0m")
+        print(
+            f"\n\u001b[34;1mhttps://projecteuler.net/problem={args.problem}\n\u001b[0m"
+        )
