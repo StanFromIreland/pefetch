@@ -53,7 +53,16 @@ def latexizer(string):
 
     string = "".join(result)
     string = string.replace("\\dots", "...")
+    string = string.replace("\\cdots", "...")
     string = string.replace("\\times", "*")
+
+    string = string.replace("\\lt", "<")
+    string = string.replace("\\le", "≤")
+    string = string.replace("\\gt", ">")
+    string = string.replace("\\ge", "≥")
+
+    string = string.replace("\\to", "→")
+    string = string.replace("\\ne", "≠")
     return string
 
 

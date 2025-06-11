@@ -26,7 +26,7 @@ classifiers = [
 
 [project.urls]
 Repository = "https://github.com/stanfromireland/pefetch.git"
-"Bug Tracker" = "https://github.com/stanfromireland/pefetchissues"
+"Bug Tracker" = "https://github.com/stanfromireland/pefetch/issues"
 Changelog = "https://github.com/stanfromireland/pefetch/blob/master/CHANGELOG.md"
 
 [project.scripts]
