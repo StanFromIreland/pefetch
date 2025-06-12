@@ -48,5 +48,5 @@ def main():
 
     if args.link:
         print(
-            f"\n\u001b[34;1mhttps://projecteuler.net/problem={args.problem}\n\u001b[0m"
+            f"\n\u001b[34;1mhttps://projecteuler.net/problem={args.problem_number}\n\u001b[0m"
         )
